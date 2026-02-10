@@ -1,0 +1,39 @@
+[2026-01-13 13:46:29.402861] Automação iniciada.
+[2026-01-13 13:46:29.460818] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601091158.zip
+[2026-01-13 13:46:29.494321] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601091351.zip
+[2026-01-13 13:46:29.517944] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131614.zip
+[2026-01-13 13:46:29.540541] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131615.zip
+[2026-01-13 13:54:29.127502] Automação iniciada.
+[2026-01-13 13:54:44.706587] Automação iniciada.
+[2026-01-13 13:55:44.031596] Automação iniciada.
+[2026-01-13 13:56:20.087907] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131656.zip
+[2026-01-13 13:56:45.280423] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131320.zip
+[2026-01-13 13:58:09.276149] Automação iniciada.
+[2026-01-13 13:58:09.308549] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131656.zip
+[2026-01-13 14:01:12.199373] Automação iniciada.
+[2026-01-13 14:04:04.106142] Automação iniciada.
+[2026-01-13 14:04:17.011664] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131704.zip
+[2026-01-13 14:04:17.011817] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131704.zip
+[2026-01-13 14:04:17.012888] ERRO: [WinError 2] O sistema não pode encontrar o arquivo especificado: 'C:\\Users\\nubya.caldas\\Downloads\\Etiqueta de envio.txt'
+[2026-01-13 14:08:00.696990] Automação iniciada.
+[2026-01-13 14:08:11.833272] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131708.zip
+[2026-01-13 14:08:24.863519] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131320.zip
+[2026-01-13 14:12:26.558922] Automação iniciada.
+[2026-01-13 14:12:34.673125] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131712.zip
+[2026-01-13 14:16:34.013664] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131716.zip
+[2026-01-13 14:23:30.660856] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131723.zip
+[2026-01-13 14:29:30.076266] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131729.zip
+[2026-01-13 14:31:23.568104] Automação iniciada.
+[2026-01-13 14:31:34.629621] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131731.zip
+[2026-01-13 14:32:40.269347] Automação iniciada.
+[2026-01-13 14:32:45.942083] Etiqueta enviada para a impressora via driver do Windows.
+[2026-01-13 14:32:46.416841] Etiqueta enviada para a impressora via driver do Windows.
+[2026-01-13 14:32:48.418364] ERRO GERAL: [WinError 2] O sistema não pode encontrar o arquivo especificado: 'C:\\Users\\nubya.caldas\\Downloads\\Etiqueta de envio.txt'
+[2026-01-13 14:35:52.488661] Automação iniciada.
+[2026-01-13 14:35:57.689498] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131735.zip
+[2026-01-13 14:36:19.845184] Etiqueta impressa com sucesso: Etiqueta MercadoEnvios-202601131736.zip
+[2026-01-13 14:37:54.994681] ERRO AO IMPRIMIR NA ZEBRA: (1801, 'OpenPrinter', 'O nome da impressora é inválido.')
+[2026-01-13 14:37:55.054951] Etiqueta enviada para a impressora via driver do Windows.
+[2026-01-13 14:37:55.485300] Etiqueta enviada para a impressora via driver do Windows.
+[2026-01-13 14:37:57.055983] ERRO GERAL: [WinError 2] O sistema não pode encontrar o arquivo especificado: 'C:\\Users\\nubya.caldas\\Downloads\\Etiqueta de envio.txt'
+[2026-01-13 14:37:57.487934] ERRO GERAL: [WinError 2] O sistema não pode encontrar o arquivo especificado: 'C:\\Users\\nubya.caldas\\Downloads\\Etiqueta de envio.txt'
