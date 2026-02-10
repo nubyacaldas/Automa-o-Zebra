@@ -5,40 +5,74 @@ import win32print
 from datetime import datetime
 
 # ================= CONFIGURAÇÕES =================
-PASTA_DOWNLOADS = os.path.join(os.path.expanduser("~"), "Downloads")
-PREFIXO_ZIP = "Etiqueta MercadoEnvios"
+PASTA_DOWNLOADS = r"C:\Users\mercado\Downloads"
+PALAVRA_CHAVE_ZIP = "MercadoEnvios"
 IMPRESSORA_ZEBRA = "Etiquetadora Mercado"
 
-PASTA_LOG = "C:\\Automacao_Zebra\\logs"
+PASTA_LOG = r"C:\Automacao_Zebra\logs"
 os.makedirs(PASTA_LOG, exist_ok=True)
+
+INTERVALO_LOOP = 2  # segundos
 # =================================================
+
 
 def log(mensagem):
     with open(os.path.join(PASTA_LOG, "log.txt"), "a", encoding="utf-8") as f:
         f.write(f"[{datetime.now()}] {mensagem}\n")
+
+
+def arquivo_pronto(caminho, tentativas=5, intervalo=1):
+    """
+    Verifica se o arquivo existe e se o tamanho permanece estável
+    """
+    if not os.path.exists(caminho):
+        return False
+
+    tamanho_anterior = -1
+
+    for _ in range(tentativas):
+        try:
+            tamanho_atual = os.path.getsize(caminho)
+            if tamanho_atual == tamanho_anterior:
+                return True
+            tamanho_anterior = tamanho_atual
+            time.sleep(intervalo)
+        except OSError:
+            return False
+
+    return False
+
 
 def enviar_para_impressora(caminho_txt):
     hPrinter = None
     try:
         hPrinter = win32print.OpenPrinter(IMPRESSORA_ZEBRA)
 
-        job = win32print.StartDocPrinter(
+        win32print.StartDocPrinter(
             hPrinter,
             1,
             ("Etiqueta MercadoEnvios", None, "RAW")
         )
 
-        win32print.StartPagePrinter(hPrinter)
-
         with open(caminho_txt, "rb") as f:
-            dados = f.read()  # ZPL puro, sem conversão
+            dados = f.read()
+
+        # ========= CORREÇÃO DE DUPLICIDADE (^PQ) =========
+        try:
+            texto = dados.decode("utf-8", errors="ignore")
+            texto = texto.replace("^PQ2", "^PQ1")
+            texto = texto.replace("^PQ,2", "^PQ,1")
+            texto = texto.replace("^PQ 2", "^PQ 1")
+            dados = texto.encode("utf-8")
+        except Exception as e:
+            log(f"Aviso: falha ao normalizar ^PQ: {e}")
+        # =================================================
 
         bytes_escritos = win32print.WritePrinter(hPrinter, dados)
 
-        win32print.EndPagePrinter(hPrinter)
         win32print.EndDocPrinter(hPrinter)
 
-        log(f"Etiqueta enviada. Bytes escritos: {bytes_escritos}")
+        log(f"Etiqueta impressa com sucesso ({bytes_escritos} bytes).")
         return True
 
     except Exception as e:
@@ -49,39 +83,62 @@ def enviar_para_impressora(caminho_txt):
         if hPrinter:
             win32print.ClosePrinter(hPrinter)
 
-log("Automação iniciada.")
 
-arquivos_processados = set()
+log("Automação iniciada.")
 
 while True:
     try:
         for arquivo in os.listdir(PASTA_DOWNLOADS):
-            if arquivo.startswith(PREFIXO_ZIP) and arquivo.endswith(".zip"):
-                caminho_zip = os.path.join(PASTA_DOWNLOADS, arquivo)
 
-                if caminho_zip in arquivos_processados:
-                    continue
+            if not arquivo.lower().endswith(".zip"):
+                continue
 
+            if PALAVRA_CHAVE_ZIP.lower() not in arquivo.lower():
+                continue
+
+            caminho_zip = os.path.join(PASTA_DOWNLOADS, arquivo)
+
+            # garante que o ZIP terminou de baixar
+            if not arquivo_pronto(caminho_zip):
+                continue
+
+            try:
                 with zipfile.ZipFile(caminho_zip, "r") as zip_ref:
                     zip_ref.extractall(PASTA_DOWNLOADS)
+            except zipfile.BadZipFile:
+                log(f"ZIP inválido ou incompleto: {arquivo}")
+                continue
+            except FileNotFoundError:
+                log(f"ZIP não encontrado no momento da extração: {arquivo}")
+                continue
 
-                txt_path = os.path.join(PASTA_DOWNLOADS, "Etiqueta de envio.txt")
+            # procura o TXT mais recente extraído
+            txt_path = None
+            arquivos_txt = [
+                os.path.join(PASTA_DOWNLOADS, f)
+                for f in os.listdir(PASTA_DOWNLOADS)
+                if f.lower().endswith(".txt")
+            ]
 
-                if os.path.exists(txt_path):
-                    sucesso = enviar_para_impressora(txt_path)
+            if arquivos_txt:
+                txt_path = max(arquivos_txt, key=os.path.getmtime)
 
-                    # tempo real para o spooler processar
-                    time.sleep(5)
+            if txt_path and os.path.exists(txt_path):
+                sucesso = enviar_para_impressora(txt_path)
 
-                    if sucesso:
+                if sucesso:
+                    try:
                         os.remove(txt_path)
                         os.remove(caminho_zip)
-                        arquivos_processados.add(caminho_zip)
-                        log("Arquivos removidos após impressão com sucesso.")
-                    else:
-                        log("Arquivo NÃO removido devido a falha na impressão.")
+                        log("TXT e ZIP removidos após impressão.")
+                    except Exception as e:
+                        log(f"Falha ao remover arquivos: {e}")
+                else:
+                    log("Falha na impressão. Arquivos mantidos.")
+            else:
+                log("Nenhum arquivo TXT encontrado após extração.")
 
-        time.sleep(2)
+        time.sleep(INTERVALO_LOOP)
 
     except Exception as e:
-        log(f"ERRO GERAL: {e}")
+        log(f"ERRO GERAL: {e}"+"teste")
