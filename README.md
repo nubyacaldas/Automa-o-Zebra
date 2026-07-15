@@ -81,6 +81,23 @@ Redução de **~93% no tempo de processamento** por pedido.
 
 ---
 
+## Inicialização automática
+
+O script roda como processo em segundo plano, iniciado por um script VBS (`iniciar_automacao.vbs`) configurado para rodar silenciosamente (sem janela de terminal visível):
+
+```vbs
+Set WshShell = CreateObject("WScript.Shell")
+WshShell.Run "pythonw C:\Automacao_Zebra\impressao_automatica_02_04.py", 0, False
+```
+
+## Organização do repositório
+
+- `impressao_automatica_02_04.py` — versão em produção (nome mantido idêntico ao usado na máquina real, para rastreabilidade)
+- `iniciar_automacao.vbs` — script de inicialização silenciosa
+- `archive/` — versões anteriores, mantidas como referência histórica do processo de evolução do script (não estão em uso)
+
+Dados operacionais (logs, CSV de etiquetas processadas, controle de arquivos já processados) não são versionados aqui — crescem continuamente e não são código-fonte. Veja `.gitignore`.
+
 ## Contexto
 
 Desenvolvido internamente na [Tradipar](https://tradipar.com.br) — distribuidora B2B/B2C de ferramentas, EPIs e equipamentos industriais com presença em mais de 22 estados brasileiros.

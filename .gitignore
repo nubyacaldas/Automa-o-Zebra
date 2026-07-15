@@ -1,0 +1,5 @@
+# Dados operacionais — não versionar (crescem todo dia, não são código-fonte)
+logs/
+*.csv
+*.log
+processados.txt
